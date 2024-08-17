@@ -35,7 +35,7 @@ import static jakarta.persistence.FetchType.EAGER;
 //when use it we should goto application and add @EnableJpaAuditing
 public class User implements UserDetails, Principal {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
     private String firstname;
     private String lastname;
