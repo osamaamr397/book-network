@@ -1,7 +1,16 @@
 package com.amr.book.user;
 
+import com.amr.book.book.Book;
+import com.amr.book.history.BookTransactionHistory;
 import com.amr.book.role.Role;
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,8 +31,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static jakarta.persistence.FetchType.EAGER;
-
-
 @Getter
 @Setter
 @SuperBuilder
@@ -35,7 +42,7 @@ import static jakarta.persistence.FetchType.EAGER;
 //when use it we should goto application and add @EnableJpaAuditing
 public class User implements UserDetails, Principal {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue
     private Integer id;
     private String firstname;
     private String lastname;
@@ -47,6 +54,11 @@ public class User implements UserDetails, Principal {
     private boolean enabled;
     @ManyToMany(fetch = EAGER)
     private List<Role> roles;
+    @OneToMany(mappedBy = "owner")
+    private List<Book> books;
+    @OneToMany(mappedBy = "user")
+    private List<BookTransactionHistory> histories;
+
     @CreatedDate
     @Column(nullable = false,updatable = false)
     //this createdDate should not be null always to be set
